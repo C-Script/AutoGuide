@@ -2,4 +2,4 @@ googleimagesdownload --keywords "Akhenaten statue,
 Amenhotep son of hapu statue, Cleopatra vii statue, Nefrtiti statue, The seated scribe statue, Thutmose III statue, Tuta
 nkhamoun statue, Hatshepsut statue, Khufu statue, Rahotep and nofret statue, Rahotep statue, Sesostris i statue, Sesostr
 is iii statue, Sheik el balad statue, The dwarf seneb and his family statue, The bed of tutankhamoun, The chair of tutan
-khamoun, The dagger of tutankhamoun, Apis statue, Ceremonial chair of tutankhamoun" --limit 10 --output_directory "Data"
+khamoun, The dagger of tutankhamoun, Apis statue, Ceremonial chair of tutankhamoun" --limit 10 --format jpg --output_directory "Data"
