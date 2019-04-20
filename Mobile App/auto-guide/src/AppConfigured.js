@@ -1,11 +1,8 @@
-import { View, Text } from 'react-native';
 import React from 'react';
 
-const AppConfigured = () => (
-  <View>
-    <Text>AppConfigured</Text>
-  </View>
-);
+import MainNavigator from './routes/MainNavigator';
+
+const AppConfigured = () => <MainNavigator />;
 
 AppConfigured.propTypes = {};
 
