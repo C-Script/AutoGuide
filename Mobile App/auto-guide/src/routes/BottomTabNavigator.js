@@ -43,8 +43,12 @@ export default createMaterialTopTabNavigator(
       activeTintColor: colors.secondary,
       inactiveTintColor: colors.secondary,
 
-      style: {
+      tabStyle: {
         backgroundColor: colors.primary,
+      },
+
+      style: {
+        backgroundColor: colors.white,
         height: sizes.bottomTabHeight,
         borderTopWidth: 0.5,
         borderTopColor: '#00000000',

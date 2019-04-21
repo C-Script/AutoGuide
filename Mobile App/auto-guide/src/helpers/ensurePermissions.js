@@ -1,13 +1,23 @@
 import { Permissions } from 'expo';
 
 export const ensureCameraPermission = async (callback) => {
-  const { status: existingStatus } = await Permissions.getAsync(
+  // Camera Permission
+  const { status: cameraStatus } = await Permissions.getAsync(
     Permissions.CAMERA,
   );
-
-  if (existingStatus !== 'granted') {
+  if (cameraStatus !== 'granted') {
     await Permissions.askAsync(Permissions.CAMERA);
   }
 
-  if (callback) callback();
+  // Camera Roll Permission
+  const { status: cameraRollStatus } = await Permissions.getAsync(
+    Permissions.CAMERA_ROLL,
+  );
+  if (cameraRollStatus !== 'granted') {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  }
+
+  if (cameraStatus === 'granted' && cameraRollStatus === 'granted') {
+    if (callback) callback();
+  }
 };
