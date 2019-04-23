@@ -7,25 +7,25 @@ import glob
 im=cv2.imread('ak1.jpg')
 # print(im)*//
 # cv.xfeatures2d.SIFT_create()
-foldersPaths=[r'D:\Auto Guide\AutoGuide\Data\train\Characters\Akhenaten',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\Cleopatra vii',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\hatshepsut',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\khufu',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\Nefrtiti',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\rahotep',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\rahotep and his wife',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\sesostris i',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\sesostris iii',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\sheik el balad',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\the dwarf seneb and his family',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\The seated scribe',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\Thutmose III',
-r'D:\Auto Guide\AutoGuide\Data\train\Characters\Tutankhamoun',
-r'D:\Auto Guide\AutoGuide\Data\train\Objects\apis',
-r'D:\Auto Guide\AutoGuide\Data\train\Objects\ceremonial chair of tutankhamoun',
-r'D:\Auto Guide\AutoGuide\Data\train\Objects\The bed of tutankhamoun',
-r'D:\Auto Guide\AutoGuide\Data\train\Objects\The chair of tut',
-r'D:\Auto Guide\AutoGuide\Data\train\Objects\The dagger of tut'
+foldersPaths=[r'..\Data\train\Characters\Akhenaten',
+r'..\Data\train\Characters\Cleopatra vii',
+r'..\Data\train\Characters\hatshepsut',
+r'..\Data\train\Characters\khufu',
+r'..\Data\train\Characters\Nefrtiti',
+r'..\Data\train\Characters\rahotep',
+r'..\Data\train\Characters\rahotep and his wife',
+r'..\Data\train\Characters\sesostris i',
+r'..\Data\train\Characters\sesostris iii',
+r'..\Data\train\Characters\sheik el balad',
+r'..\Data\train\Characters\the dwarf seneb and his family',
+r'..\Data\train\Characters\The seated scribe',
+r'..\Data\train\Characters\Thutmose III',
+r'..\Data\train\Characters\Tutankhamoun',
+r'..\Data\train\Objects\apis',
+r'..\Data\train\Objects\ceremonial chair of tutankhamoun',
+r'..\Data\train\Objects\The bed of tutankhamoun',
+r'..\Data\train\Objects\The chair of tut',
+r'..\Data\train\Objects\The dagger of tut'
 ]
 filename='extractedFeatures.csv'
 
@@ -129,18 +129,23 @@ def saveExtractedFeatures():
                 # print(len(descriptors))
                 # sys.exit()
 
-# digits_img = cv2.imread('ak1.jpg', cv2.IMREAD_GRAYSCALE)
+# seated_img = cv2.imread(r'C:\Users\M.Eltobgy\Desktop\seatedscribe1.jpg', cv2.IMREAD_GRAYSCALE)
 # digits = split2d(digits_img, (20, 20))
 # cv2.imshow(digits)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
+saveExtractedFeatures()
 # arr=np.loadtxt(filename,delimiter=',')
+# x,Y=arr[:,:-1],arr[:,-1]
+# print(x.shape)
+# print(x,Y)
 # print(arr.shape)
 # sys.exit()
-saveExtractedFeatures()
+
 # grayimg=to_gray(im)
-# kp1,desc2=gen_sift_features(grayimg)
-# print(desc2)
+# print(seated_img.shape)
+# kp1,desc1=gen_sift_features(seated_img)
+# print(desc1)
 # show_sift_features(grayimg,im,kp1)
 # plt.show()
 # cv2.waitKey(0)
