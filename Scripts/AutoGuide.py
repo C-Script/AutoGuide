@@ -1,10 +1,10 @@
 import numpy as np
-import sys
+import os
 from matplotlib import pyplot as plt
 import cv2 
 import csv
 import glob
-im=cv2.imread('ak1.jpg')
+im=cv2.imread('ak1.jpg',cv2.IMREAD_GRAYSCALE)
 # print(im)*//
 # cv.xfeatures2d.SIFT_create()
 foldersPaths=[r'..\Data\train\Characters\Akhenaten',
@@ -124,23 +124,72 @@ def saveExtractedFeatures():
                         else:
                                 appendToFile(desc,i,filename)
 
-                # res = np.array(descriptors)
-                # print(res)
-                # print(len(descriptors))
-                # sys.exit()
+        return True
+def modelInitAndTrain(featurs,labels,gamma=0.01,C=1):
+    svm = cv2.ml.SVM_create()
+    svm.setType(cv2.ml.SVM_C_SVC)
+    svm.setKernel(cv2.ml.SVM_RBF)
+    svm.setGamma(gamma)
+    svm.setC(C)
+    svm.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
+    svm.train(featurs, cv2.ml.ROW_SAMPLE, labels)
+    return svm
+def getDataset(filepath):
+    arr = np.loadtxt(filepath, delimiter=',')
+    x, Y = arr[:, :-1], arr[:, -1]
+    return x,Y
+if __name__ == 'main':
+    if( not (os.path.exists('pharos.xml'))):
+        print('oops, can\'t find any saved models,please be patient :)')
+        if(not (os.path.exists(filename))):
+            print('sounds like it\'s the first time you run the great Model,please be patient extracting features...')
+            if(saveExtractedFeatures()):
+                print('congrats , we have successfully extracted the features ,and it\'s ready to be feed to the classifier...')
+                x,Y=getDataset(filename)
+                print('training the model , you need to be patient :)')
+                svm=modelInitAndTrain(x,Y)
+                print('congrats, saving the model...')
+                svm.save('pharos.xml')
+        else:
+            print('great!, we found the features file ,that will save you some time')
+            x, Y = getDataset(filename)
+            print('training the model , you need to be patient :)')
+            svm = modelInitAndTrain(x, Y)
+            print('congrats, saving the model...')
+            svm.save('pharos.xml')
+            while(1):
+                testImage = input('model ready to be tested ,please enter the full path of an image to b tested:\n')
+                sampleImage = cv2.imread(testImage, cv2.IMREAD_GRAYSCALE)
+                response = svm.predict(sampleImage)
+                print(response)
+                print(response[1].ravel())
+                y=input('do you want to try anothe image ? y/n: ')
+                if (not (y.lower()) == 'y'):
+                    print('thanks! ')
+                    break
+    else:
+        print('loading the model...')
+        svm=cv2.ml.SVM_load('pharos.xml')
+        while(1):
+            testImage=input('model ready to be tested ,please enter the full path of an image to b tested:\n')
+            sampleImage=cv2.imread(testImage,cv2.IMREAD_GRAYSCALE)
+            response=svm.predict(sampleImage)
+            print(response)
+            print(response[1].ravel())
+            y=input('do you want to try anothe image ? y/n: ')
+            if(not(y.lower())=='y'):
+                print('thanks! ')
+                break
 
-# seated_img = cv2.imread(r'C:\Users\M.Eltobgy\Desktop\seatedscribe1.jpg', cv2.IMREAD_GRAYSCALE)
-# digits = split2d(digits_img, (20, 20))
-# cv2.imshow(digits)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-saveExtractedFeatures()
-# arr=np.loadtxt(filename,delimiter=',')
-# x,Y=arr[:,:-1],arr[:,-1]
-# print(x.shape)
-# print(x,Y)
-# print(arr.shape)
-# sys.exit()
+
+
+
+
+
+
+
+
+#testing stuff
 
 # grayimg=to_gray(im)
 # print(seated_img.shape)
