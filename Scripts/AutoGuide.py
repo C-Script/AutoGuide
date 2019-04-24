@@ -100,7 +100,7 @@ def getFolderImages(folderPath,ext='jpg'):
     return images
 def saveExtractedFeatures():
         descriptors=np.zeros((0,128))
-        print(descriptors)
+        # print(descriptors)
         # sys.exit()
         for i,folder in enumerate(foldersPaths):
                 images=getFolderImages(folder)
@@ -132,13 +132,13 @@ def modelInitAndTrain(featurs,labels,gamma=0.01,C=1):
     svm.setGamma(gamma)
     svm.setC(C)
     svm.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
-    svm.train(featurs, cv2.ml.ROW_SAMPLE, labels)
+    svm.train(np.float32(featurs), cv2.ml.ROW_SAMPLE, np.int32(labels))
     return svm
 def getDataset(filepath):
     arr = np.loadtxt(filepath, delimiter=',')
     x, Y = arr[:, :-1], arr[:, -1]
     return x,Y
-if __name__ == 'main':
+if __name__ == '__main__':
     if( not (os.path.exists('pharos.xml'))):
         print('oops, can\'t find any saved models,please be patient :)')
         if(not (os.path.exists(filename))):
