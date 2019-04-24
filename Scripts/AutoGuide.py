@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import cv2 
 import csv
 import glob
+import time
 im=cv2.imread('ak1.jpg',cv2.IMREAD_GRAYSCALE)
 # print(im)*//
 # cv.xfeatures2d.SIFT_create()
@@ -125,13 +126,13 @@ def saveExtractedFeatures():
                                 appendToFile(desc,i,filename)
 
         return True
-def modelInitAndTrain(featurs,labels,gamma=0.01,C=1):
+def modelInitAndTrain(featurs,labels,gamma=0.5,C=1):
     svm = cv2.ml.SVM_create()
     svm.setType(cv2.ml.SVM_C_SVC)
     svm.setKernel(cv2.ml.SVM_RBF)
     svm.setGamma(gamma)
     svm.setC(C)
-    svm.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
+    # svm.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
     svm.train(np.float32(featurs), cv2.ml.ROW_SAMPLE, np.int32(labels))
     return svm
 def getDataset(filepath):
@@ -147,23 +148,30 @@ if __name__ == '__main__':
                 print('congrats , we have successfully extracted the features ,and it\'s ready to be feed to the classifier...')
                 x,Y=getDataset(filename)
                 print('training the model , you need to be patient :)')
-                svm=modelInitAndTrain(x,Y)
+                start =time.time()
+                svm=modelInitAndTrain(x,Y,C=2.67, gamma=5.383)
+                end=time.time()
+                print('training time = ',(end-start),' S')
                 print('congrats, saving the model...')
                 svm.save('pharos.xml')
         else:
             print('great!, we found the features file ,that will save you some time')
             x, Y = getDataset(filename)
             print('training the model , you need to be patient :)')
-            svm = modelInitAndTrain(x, Y)
+            start=time.time()
+            svm = modelInitAndTrain(x, Y,C=2.67, gamma=5.383)
+            end=time.time()
+            print('training time = ', (end - start),' S')
             print('congrats, saving the model...')
             svm.save('pharos.xml')
             while(1):
-                testImage = input('model ready to be tested ,please enter the full path of an image to b tested:\n')
+                testImage = input('model ready to be tested ,please enter the full path of an image to be tested:\n')
                 sampleImage = cv2.imread(testImage, cv2.IMREAD_GRAYSCALE)
-                response = svm.predict(sampleImage)
-                print(response)
-                print(response[1].ravel())
-                y=input('do you want to try anothe image ? y/n: ')
+                k, imgDesc = gen_sift_features(sampleImage)
+                response, arr = svm.predict((imgDesc))
+                # print(response)
+                print('this image belongs to class :#',response)
+                y=input('do you want to try another image ? y/n: ')
                 if (not (y.lower()) == 'y'):
                     print('thanks! ')
                     break
@@ -171,12 +179,16 @@ if __name__ == '__main__':
         print('loading the model...')
         svm=cv2.ml.SVM_load('pharos.xml')
         while(1):
-            testImage=input('model ready to be tested ,please enter the full path of an image to b tested:\n')
+            testImage=input('model ready to be tested ,please enter the full path of an image to be tested:\n')
             sampleImage=cv2.imread(testImage,cv2.IMREAD_GRAYSCALE)
-            response=svm.predict(sampleImage)
-            print(response)
-            print(response[1].ravel())
-            y=input('do you want to try anothe image ? y/n: ')
+            k,imgDesc=gen_sift_features(sampleImage)
+            # print((imgDesc))
+            # sampleImage=np.reshape(sampleImage,(1,128))
+            # sampleImage=sampleImage.reshpe(1,128)
+            response,arr = svm.predict((imgDesc))
+            # print(arr)
+            print('this image belongs to class :#',response)
+            y=input('do you want to try another image ? y/n: ')
             if(not(y.lower())=='y'):
                 print('thanks! ')
                 break
