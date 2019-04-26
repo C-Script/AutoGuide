@@ -30,8 +30,8 @@ r'..\Data\train\Objects\The bed of tutankhamoun',
 r'..\Data\train\Objects\The chair of tut',
 r'..\Data\train\Objects\The dagger of tut'
 ]
-filename='./extractedFeatures.csv'
-modelName='./pharos.pkl'
+filename='/content/AutoGuide/Scripts/extractedFeatures.csv'
+modelName='/content/AutoGuide/Scripts/pharos.pkl'
 def writeTofile(row,label,fileName):
     # table=dgv.get_items()[3:]
     with open(fileName, mode='w', newline='') as f:
