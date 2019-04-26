@@ -1,10 +1,12 @@
 import numpy as np
 import os
 from matplotlib import pyplot as plt
+from sklearn.svm import SVC
 import cv2 
 import csv
 import glob
 import time
+from sklearn.externals import joblib
 im=cv2.imread('ak1.jpg',cv2.IMREAD_GRAYSCALE)
 # print(im)*//
 # cv.xfeatures2d.SIFT_create()
@@ -29,25 +31,25 @@ r'..\Data\train\Objects\The chair of tut',
 r'..\Data\train\Objects\The dagger of tut'
 ]
 filename='extractedFeatures.csv'
-
+modelName='pharos.pkl'
 def writeTofile(row,label,fileName):
     # table=dgv.get_items()[3:]
     with open(fileName, mode='w', newline='') as f:
         file_writer = csv.writer(f,delimiter=',',dialect="excel", lineterminator="\n")
+        # feature=row[0]
         for r in row:
             addlabel=np.append(r,label)
             file_writer.writerow(addlabel)
-
         # file_writer.writerow([label])
 def appendToFile(row,label,fileName):
     # table=dgv.get_items()[3:]
     with open(fileName, mode='a', newline='') as f:
         file_writer = csv.writer(f,delimiter=',',dialect="excel", lineterminator="\n")
         # print(row)
+        # feature=row[0]
         for r in row:
             addlabel = np.append(r, label)
             file_writer.writerow(addlabel)
-        # file_writer.writerow([label])
 def getFromFile(fileName):
     contents=[]
     with open(fileName, mode='r', newline='') as f:
@@ -82,6 +84,18 @@ def split2d(img, cell_size, flatten=True):
     if flatten:
         cells = cells.reshape(-1, sy, sx)
     return cells
+
+def imgResize(directorySrc,width,height):
+    # images  = os.listdir(directorySrc)
+    # for imgName in images :
+    #     os.chdir(directorySrc)
+    dim = (width, height)
+    resizedImg = cv2.resize(directorySrc, dim, interpolation = cv2.INTER_AREA)
+    # os.chdir(directoryDest)
+    # cv2.imwrite(imgName, resizedImg)
+    #cv2.imshow("Resized image", resizedImg)
+    #cv2.waitKey(0)
+    return resizedImg
 def gen_sift_features(gray_img):
     sift = cv2.xfeatures2d.SIFT_create()
     # kp is the keypoints
@@ -107,6 +121,7 @@ def saveExtractedFeatures():
                 images=getFolderImages(folder)
                 for j,image in enumerate(images):
                         grayimage=to_gray(image)
+                        # resizedImage=imgResize(grayimage,512,512)
                         # print(grayimage.shape)
                         kp,desc=gen_sift_features(grayimage)
                         # descriptors=descriptors.reshape(desc.shape)
@@ -126,21 +141,26 @@ def saveExtractedFeatures():
                                 appendToFile(desc,i,filename)
 
         return True
-def modelInitAndTrain(featurs,labels,gamma=0.5,C=1):
-    svm = cv2.ml.SVM_create()
-    svm.setType(cv2.ml.SVM_C_SVC)
-    svm.setKernel(cv2.ml.SVM_RBF)
-    svm.setGamma(gamma)
-    svm.setC(C)
+def modelInitAndTrain(featurs,labels,gamma=0.1,C=1):
+    svm =SVC(gamma='auto')
+    svm.fit(featurs, labels)
+    # svm.setType(cv2.ml.SVM_C_SVC)
+    # svm.setKernel(cv2.ml.SVM_)
+    # svm.setGamma(gamma)
+    # svm.setC(C)
     # svm.setTermCriteria((cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6))
-    svm.train(np.float32(featurs), cv2.ml.ROW_SAMPLE, np.int32(labels))
+    # svm.train(np.float32(featurs), cv2.ml.ROW_SAMPLE, np.int32(labels))
     return svm
+def ModelSave(model,name):
+    joblib.dump(model,name)
+def ModelLoad(name):
+    return joblib.load(name)
 def getDataset(filepath):
     arr = np.loadtxt(filepath, delimiter=',')
     x, Y = arr[:, :-1], arr[:, -1]
     return x,Y
 if __name__ == '__main__':
-    if( not (os.path.exists('pharos.xml'))):
+    if( not (os.path.exists(modelName))):
         print('oops, can\'t find any saved models,please be patient :)')
         if(not (os.path.exists(filename))):
             print('sounds like it\'s the first time you run the great Model,please be patient extracting features...')
@@ -153,23 +173,25 @@ if __name__ == '__main__':
                 end=time.time()
                 print('training time = ',(end-start),' S')
                 print('congrats, saving the model...')
-                svm.save('pharos.xml')
+                ModelSave(svm,modelName)
         else:
             print('great!, we found the features file ,that will save you some time')
             x, Y = getDataset(filename)
+            print(x.shape)
+            print(Y.shape)
             print('training the model , you need to be patient :)')
             start=time.time()
             svm = modelInitAndTrain(x, Y,C=2.67, gamma=5.383)
             end=time.time()
             print('training time = ', (end - start),' S')
             print('congrats, saving the model...')
-            svm.save('pharos.xml')
+            ModelSave(svm,modelName)
             while(1):
                 testImage = input('model ready to be tested ,please enter the full path of an image to be tested:\n')
                 sampleImage = cv2.imread(testImage, cv2.IMREAD_GRAYSCALE)
                 k, imgDesc = gen_sift_features(sampleImage)
-                response, arr = svm.predict((imgDesc))
-                # print(response)
+                response = svm.predict((imgDesc))
+                print(response)
                 print('this image belongs to class :#',response)
                 y=input('do you want to try another image ? y/n: ')
                 if (not (y.lower()) == 'y'):
@@ -177,17 +199,22 @@ if __name__ == '__main__':
                     break
     else:
         print('loading the model...')
-        svm=cv2.ml.SVM_load('pharos.xml')
+        svm=ModelLoad(modelName)
         while(1):
             testImage=input('model ready to be tested ,please enter the full path of an image to be tested:\n')
             sampleImage=cv2.imread(testImage,cv2.IMREAD_GRAYSCALE)
             k,imgDesc=gen_sift_features(sampleImage)
-            # print((imgDesc))
+            # feature=imgDesc[0]
+            # for i in range(1,200):
+            #     feature=np.append(feature,imgDesc[i])
+
+            # print(feature.shape)
             # sampleImage=np.reshape(sampleImage,(1,128))
             # sampleImage=sampleImage.reshpe(1,128)
-            response,arr = svm.predict((imgDesc))
-            # print(arr)
-            print('this image belongs to class :#',response)
+            # print()
+            response = svm.predict(imgDesc)
+            print(response)
+            # print('this image belongs to class :#',response)
             y=input('do you want to try another image ? y/n: ')
             if(not(y.lower())=='y'):
                 print('thanks! ')
@@ -202,7 +229,6 @@ if __name__ == '__main__':
 
 
 #testing stuff
-
 # grayimg=to_gray(im)
 # print(seated_img.shape)
 # kp1,desc1=gen_sift_features(seated_img)
