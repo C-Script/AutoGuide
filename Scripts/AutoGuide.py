@@ -142,7 +142,7 @@ def saveExtractedFeatures():
 
         return True
 def modelInitAndTrain(featurs,labels,gamma=0.1,C=1):
-    svm =SVC(gamma=gamma,C=C,verbose=True)
+    svm =SVC(gamma=gamma,C=C,verbose=True,max_iter=1000)
     svm.fit(featurs, labels)
     # svm.setType(cv2.ml.SVM_C_SVC)
     # svm.setKernel(cv2.ml.SVM_)
