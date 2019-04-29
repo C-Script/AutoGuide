@@ -19,11 +19,29 @@ class CaptureScreen extends Component {
 
     const { uri } = result;
 
+    if(!result.cancelled){
     const { navigation } = this.props;
 
     navigation.navigate('Info', {
       imageUri: uri,
+    });}
+  };
+
+
+  pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      base64:true
     });
+
+    const { uri } = result;
+ 
+    if (!result.cancelled) {
+      const { navigation } = this.props;
+
+      navigation.navigate('Info', {
+        imageUri: uri,
+      });
+    }
   };
 
   render() {
@@ -31,22 +49,20 @@ class CaptureScreen extends Component {
 
     return (
       <View style={styles.container}>
+        <Text>welcome to the Auto guide app</Text>
+
         <TouchableHighlight
           style={styles.button}
           onPress={() => ensureCameraPermission(this.openCamera)}
         >
-          <Text style={styles.buttonText}>
-            Capture Picture
-          </Text>
+          <Text style={styles.buttonText}>Capture Picture</Text>
         </TouchableHighlight>
         <Text style={styles.separatorText}>OR</Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => ensureCameraPermission(this.openCamera)}
+          onPress={() => ensureCameraPermission(this.pickImage)}
         >
-          <Text style={styles.buttonText}>
-            Pick From Gallery
-          </Text>
+          <Text style={styles.buttonText}>Pick From Gallery</Text>
         </TouchableHighlight>
         {imageUri ? (
           <Image
