@@ -14,7 +14,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 3,
     borderColor: colors.white,
+    alignSelf: 'center',
+    marginBottom: 5,
   },
+  info:{
+    marginHorizontal:10,
+    textAlign:'center',
+    fontSize:18
+  }
 });
 
 export default styles;
