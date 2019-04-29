@@ -49,7 +49,7 @@ class CaptureScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>welcome to the Auto guide app</Text>
+        <Text style={styles.welcomeStyles}>Welcome to the Auto Guide app</Text>
 
         <TouchableHighlight
           style={styles.button}
