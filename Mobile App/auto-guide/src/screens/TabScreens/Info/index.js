@@ -1,4 +1,4 @@
-import { View, Image } from 'react-native';
+import { View, Image,Text } from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -20,7 +20,7 @@ const InfoScreen = ({ navigation }) => {
           }}
           style={styles.image}
         />
-      ) : null}
+      ) : <Text>You haven't captured any image yet </Text>}
     </View>
   );
 };

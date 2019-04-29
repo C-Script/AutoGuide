@@ -1,9 +1,7 @@
 import { ImagePicker } from 'expo';
 import PropTypes from 'prop-types';
 
-import {
-  Text, View, Button, Image,
-} from 'react-native';
+import { Text, View, Button, Image } from 'react-native';
 import React, { Component } from 'react';
 
 import { ensureCameraPermission } from '../../../helpers/ensurePermissions';
@@ -33,11 +31,11 @@ class CaptureScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>Capture</Text>
         <Button
-          title="Take a pic"
+          title="Capture Picture"
           onPress={() => ensureCameraPermission(this.openCamera)}
         />
+       
         {imageUri ? (
           <Image
             source={{
