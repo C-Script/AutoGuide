@@ -3,7 +3,7 @@ import { colors } from '../../../assets/styles/base';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
@@ -17,11 +17,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: 5,
   },
-  info:{
-    marginHorizontal:10,
-    textAlign:'center',
-    fontSize:18
-  }
+  info: {
+    marginHorizontal: 10,
+    textAlign: 'center',
+    fontSize: 18,
+  },
+  infoTitle: {
+    marginVertical: 5,
+    textAlign: 'center',
+    fontSize: 30,
+  },
+ 
 });
 
 export default styles;

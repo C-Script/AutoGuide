@@ -13,10 +13,15 @@ const InfoScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <ScrollView contentContainerStyle={styles.container}>
+
+   
         {imageUri ? (
           <View>
+            <Text style={styles.infoTitle}>
+               {info[0].name}
+            </Text>
+
             <Image
               source={{
                 uri: imageUri,
@@ -26,10 +31,10 @@ const InfoScreen = ({ navigation }) => {
             <Text style={styles.info}>{info[0].info_in_arabic}</Text>
           </View>
         ) : (
-          <Text>You haven't captured any image yet </Text>
+          <Text style={styles.notCaptured} >You haven't captured any image yet </Text>
         )}
-      </ScrollView>
-    </View>
+    </ScrollView>
+
   );
 };
 
