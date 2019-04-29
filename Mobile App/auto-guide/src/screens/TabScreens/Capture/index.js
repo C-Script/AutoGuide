@@ -35,7 +35,10 @@ class CaptureScreen extends Component {
           title="Capture Picture"
           onPress={() => ensureCameraPermission(this.openCamera)}
         />
-       
+        <Text>OR</Text>
+        <Button
+        title="Pick From Gallery"
+        />
         {imageUri ? (
           <Image
             source={{
