@@ -1,40 +1,52 @@
 import { ImagePicker } from 'expo';
 import PropTypes from 'prop-types';
 
-import { Text, View, Image, TouchableHighlight } from 'react-native';
+import {
+  Text, View, Image, TouchableHighlight,
+} from 'react-native';
 import React, { Component } from 'react';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import { ensureCameraPermission } from '../../../helpers/ensurePermissions';
 import styles from './styles';
+import { colors } from '../../../assets/styles/base';
 
 class CaptureScreen extends Component {
   state = {
     imageUri: '',
+    uploadingImage: false,
   };
 
   openCamera = async () => {
+    this.setState(() => ({ uploadingImage: true }));
     const result = await ImagePicker.launchCameraAsync({
       base64: true,
     });
 
+    this.setState(() => ({ uploadingImage: false }));
+
     const { uri } = result;
 
-    if(!result.cancelled){
-    const { navigation } = this.props;
+    if (!result.cancelled) {
+      const { navigation } = this.props;
 
-    navigation.navigate('Info', {
-      imageUri: uri,
-    });}
+      navigation.navigate('Info', {
+        imageUri: uri,
+      });
+    }
   };
 
-
   pickImage = async () => {
+    this.setState(() => ({ uploadingImage: true }));
+
     const result = await ImagePicker.launchImageLibraryAsync({
-      base64:true
+      base64: true,
     });
 
+    this.setState(() => ({ uploadingImage: false }));
+
     const { uri } = result;
- 
+
     if (!result.cancelled) {
       const { navigation } = this.props;
 
@@ -45,11 +57,13 @@ class CaptureScreen extends Component {
   };
 
   render() {
-    const { imageUri } = this.state;
+    const { imageUri, uploadingImage } = this.state;
 
     return (
       <View style={styles.container}>
-        <Text style={styles.welcomeStyles}>Welcome to the Auto Guide app</Text>
+        <Spinner visible={uploadingImage} color={colors.primary} />
+
+        <Text style={styles.welcomeStyles}>Welcome to the Auto Guide App</Text>
 
         <TouchableHighlight
           style={styles.button}

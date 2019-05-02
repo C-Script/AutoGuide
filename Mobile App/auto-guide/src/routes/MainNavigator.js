@@ -37,7 +37,7 @@ const RootNavigator = createStackNavigator(
 
         // Capture tab screen
         if (tabScreen === 'Capture') {
-          headerTitle = 'Capture a statue picture!';
+          headerTitle = 'Capture a statue picture! 🇪🇬';
           headerStyle = {
             backgroundColor: colors.primary,
           };
@@ -45,7 +45,7 @@ const RootNavigator = createStackNavigator(
 
         // Info tab screen
         if (tabScreen === 'Info') {
-          headerTitle = 'Info';
+          headerTitle = 'Info 📜';
           headerStyle = {
             backgroundColor: colors.primary,
           };

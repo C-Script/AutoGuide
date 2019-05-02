@@ -19,13 +19,14 @@ const styles = StyleSheet.create({
     color: colors.white,
     textAlign: 'center',
   },
-  separatorText:{margin:5},
-  welcomeStyles:{
-    fontSize:55,
+  separatorText: { margin: 5 },
+  welcomeStyles: {
+    fontSize: 45,
+    fontWeight: 'bold',
     marginHorizontal: 5,
     marginBottom: 40,
-    textAlign:"center"
-  }
+    textAlign: 'center',
+  },
 });
 
 export default styles;
