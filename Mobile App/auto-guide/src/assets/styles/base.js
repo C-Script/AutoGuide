@@ -8,3 +8,9 @@ export const colors = {
 export const sizes = {
   bottomTabHeight: 70,
 };
+
+export const fontTypes = {
+  main: 'ralewayRegular',
+  mainBold: 'ralewayBold',
+  mainThin: 'ralewayThin',
+};

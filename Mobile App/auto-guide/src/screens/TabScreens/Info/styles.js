@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../../assets/styles/base';
+
+import { colors, fontTypes } from '../../../assets/styles/base';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,8 +27,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     textAlign: 'center',
     fontSize: 30,
+    fontFamily: fontTypes.mainThin,
   },
- 
 });
 
 export default styles;

@@ -1,4 +1,6 @@
-import { View, Image, Text, ScrollView } from 'react-native';
+import {
+  View, Image, Text, ScrollView,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
 import info from '../../../assets/info';
@@ -14,27 +16,24 @@ const InfoScreen = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {imageUri ? (
+        <View>
+          <Text style={styles.infoTitle}>{info[0].name}</Text>
 
-   
-        {imageUri ? (
-          <View>
-            <Text style={styles.infoTitle}>
-               {info[0].name}
-            </Text>
-
-            <Image
-              source={{
-                uri: imageUri,
-              }}
-              style={styles.image}
-            />
-            <Text style={styles.info}>{info[0].info_in_arabic}</Text>
-          </View>
-        ) : (
-          <Text style={styles.notCaptured} >You haven't captured any image yet </Text>
-        )}
+          <Image
+            source={{
+              uri: imageUri,
+            }}
+            style={styles.image}
+          />
+          <Text style={styles.info}>{info[0].info_in_arabic}</Text>
+        </View>
+      ) : (
+        <Text style={styles.notCaptured}>
+          {'You haven\'t captured any image yet'}
+        </Text>
+      )}
     </ScrollView>
-
   );
 };
 

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors } from '../../../assets/styles/base';
+import { colors, fontTypes } from '../../../assets/styles/base';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,11 +21,12 @@ const styles = StyleSheet.create({
   },
   separatorText: { margin: 5 },
   welcomeStyles: {
-    fontSize: 45,
-    fontWeight: 'bold',
+    fontSize: 35,
     marginHorizontal: 5,
     marginBottom: 40,
     textAlign: 'center',
+    color: colors.secondary,
+    fontFamily: fontTypes.mainBold,
   },
 });
 

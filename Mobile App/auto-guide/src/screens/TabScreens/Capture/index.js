@@ -1,19 +1,15 @@
 import { ImagePicker } from 'expo';
+import { Text, View, TouchableHighlight } from 'react-native';
 import PropTypes from 'prop-types';
-
-import {
-  Text, View, Image, TouchableHighlight,
-} from 'react-native';
 import React, { Component } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 
+import { colors } from '../../../assets/styles/base';
 import { ensureCameraPermission } from '../../../helpers/ensurePermissions';
 import styles from './styles';
-import { colors } from '../../../assets/styles/base';
 
 class CaptureScreen extends Component {
   state = {
-    imageUri: '',
     uploadingImage: false,
   };
 
@@ -57,7 +53,7 @@ class CaptureScreen extends Component {
   };
 
   render() {
-    const { imageUri, uploadingImage } = this.state;
+    const { uploadingImage } = this.state;
 
     return (
       <View style={styles.container}>
@@ -78,14 +74,6 @@ class CaptureScreen extends Component {
         >
           <Text style={styles.buttonText}>Pick From Gallery</Text>
         </TouchableHighlight>
-        {imageUri ? (
-          <Image
-            source={{
-              uri: imageUri,
-            }}
-            style={{ width: 50, height: 50 }}
-          />
-        ) : null}
       </View>
     );
   }
