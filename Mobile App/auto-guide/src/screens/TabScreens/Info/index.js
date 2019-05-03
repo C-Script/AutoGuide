@@ -14,7 +14,6 @@ const InfoScreen = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-
    
         {imageUri ? (
           <View>

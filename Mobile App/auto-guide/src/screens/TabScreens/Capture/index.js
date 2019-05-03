@@ -15,6 +15,7 @@ class CaptureScreen extends Component {
   openCamera = async () => {
     const result = await ImagePicker.launchCameraAsync({
       base64: true,
+      allowsEditing:true
     });
 
     const { uri } = result;
