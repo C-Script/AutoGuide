@@ -1,43 +1,49 @@
 import { ImagePicker } from 'expo';
+import { Text, View, TouchableHighlight } from 'react-native';
+import axios from 'axios';
 import PropTypes from 'prop-types';
-
-import { Text, View, Image, TouchableHighlight } from 'react-native';
 import React, { Component } from 'react';
+import Spinner from 'react-native-loading-spinner-overlay';
 
+import { colors } from '../../../assets/styles/base';
 import { ensureCameraPermission } from '../../../helpers/ensurePermissions';
 import styles from './styles';
 
 class CaptureScreen extends Component {
   state = {
-    imageUri: '',
+    uploadingImage: false,
   };
 
-  openCamera = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      base64: true,
-      allowsEditing:true
-    });
+  imagePickerAsync = async (imageType) => {
+    let result = '';
 
-    const { uri } = result;
+    if (imageType === 'cam') {
+      result = await ImagePicker.launchCameraAsync({
+        base64: true,
+      });
+    } else {
+      result = await ImagePicker.launchImageLibraryAsync({
+        base64: true,
+      });
+    }
 
-    if(!result.cancelled){
-    const { navigation } = this.props;
-
-    navigation.navigate('Info', {
-      imageUri: uri,
-    });}
+    return result;
   };
 
+  pickImage = async (imageType) => {
+    this.setState(() => ({ uploadingImage: true }));
 
-  pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      base64:true
-    });
+    const result = await this.imagePickerAsync(imageType);
 
-    const { uri } = result;
- 
+    this.setState(() => ({ uploadingImage: false }));
+
     if (!result.cancelled) {
       const { navigation } = this.props;
+      const { uri } = result;
+
+      axios.get('http://10.0.0.141:5000/').then((req, res) => {
+        console.log(res.data);
+      });
 
       navigation.navigate('Info', {
         imageUri: uri,
@@ -46,33 +52,28 @@ class CaptureScreen extends Component {
   };
 
   render() {
-    const { imageUri } = this.state;
+    const { uploadingImage } = this.state;
 
     return (
       <View style={styles.container}>
-        <Text style={styles.welcomeStyles}>Welcome to the Auto Guide app</Text>
+        <Spinner visible={uploadingImage} color={colors.primary} />
+
+        <Text style={styles.welcomeStyles}>Welcome to the Auto Guide App</Text>
 
         <TouchableHighlight
           style={styles.button}
-          onPress={() => ensureCameraPermission(this.openCamera)}
+          onPress={() => ensureCameraPermission(() => this.pickImage('cam'))}
         >
           <Text style={styles.buttonText}>Capture Picture</Text>
         </TouchableHighlight>
         <Text style={styles.separatorText}>OR</Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => ensureCameraPermission(this.pickImage)}
+          onPress={() => ensureCameraPermission(() => this.pickImage('library'))
+          }
         >
           <Text style={styles.buttonText}>Pick From Gallery</Text>
         </TouchableHighlight>
-        {imageUri ? (
-          <Image
-            source={{
-              uri: imageUri,
-            }}
-            style={{ width: 50, height: 50 }}
-          />
-        ) : null}
       </View>
     );
   }
