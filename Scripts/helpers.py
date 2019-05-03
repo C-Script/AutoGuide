@@ -26,7 +26,7 @@ class ImageHelpers:
 class BOVHelpers:
     def __init__(self, n_clusters=20):
         self.n_clusters = n_clusters
-        self.kmeans_obj = KMeans(n_clusters=n_clusters, verbose=True)
+        self.kmeans_obj = KMeans(n_clusters=n_clusters,verbose=True,algorithm='full',n_jobs=1)
         self.kmeans_ret = None
         self.descriptor_vstack = None
         self.mega_histogram = None

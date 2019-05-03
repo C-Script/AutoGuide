@@ -45,7 +45,6 @@ class CaptureScreen extends Component {
       //   console.log(res.data);
       // });
 
-      console.log(uri)
       navigation.navigate('Info', {
         imageUri: uri,
       });

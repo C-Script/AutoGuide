@@ -170,19 +170,19 @@ if __name__ == '__main__':
     # args =  vars(parser.parse_args())
     # print(args)
 
-    bov = BOV(no_clusters=100)
+    bov = BOV(no_clusters=20)
     # print(sys.argv)
     # print(sys.argv[2])
     # set training paths
-    ##bov.train_path = r'C:\Users\ahmed\Desktop\Image-Processing\Project\photos'
+    bov.train_path = sys.argv[1]
     # set testing paths
-    bov.test_path =r'C:\Users\mohamed\Desktop\test'
+    #bov.test_path =r'C:\Users\mohamed\Desktop\test'
     # train the model
     s = time.clock()
-    ##bov.trainModel()
+    bov.trainModel()
     print('time elapsed: ', (time.clock()-s)/60)
     # test model
     bov.loadModel()
     bov.testModel()
     # save the model
-    #bov.saveModel()
+    bov.saveModel()
