@@ -182,7 +182,7 @@ if __name__ == '__main__':
     bov.trainModel()
     print('time elapsed: ', (time.clock()-s)/60)
     # test model
-    bov.loadModel()
-    bov.testModel()
+    #bov.loadModel()
+    #bov.testModel()
     # save the model
     bov.saveModel()
