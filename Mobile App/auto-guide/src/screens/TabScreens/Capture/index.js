@@ -1,5 +1,6 @@
 import { ImagePicker } from 'expo';
 import { Text, View, TouchableHighlight } from 'react-native';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -13,38 +14,36 @@ class CaptureScreen extends Component {
     uploadingImage: false,
   };
 
-  openCamera = async () => {
-    this.setState(() => ({ uploadingImage: true }));
-    const result = await ImagePicker.launchCameraAsync({
-      base64: true,
-    });
+  imagePickerAsync = async (imageType) => {
+    let result = '';
 
-    this.setState(() => ({ uploadingImage: false }));
-
-    const { uri } = result;
-
-    if (!result.cancelled) {
-      const { navigation } = this.props;
-
-      navigation.navigate('Info', {
-        imageUri: uri,
+    if (imageType === 'cam') {
+      result = await ImagePicker.launchCameraAsync({
+        base64: true,
+      });
+    } else {
+      result = await ImagePicker.launchImageLibraryAsync({
+        base64: true,
       });
     }
+
+    return result;
   };
 
-  pickImage = async () => {
+  pickImage = async (imageType) => {
     this.setState(() => ({ uploadingImage: true }));
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      base64: true,
-    });
+    const result = await this.imagePickerAsync(imageType);
 
     this.setState(() => ({ uploadingImage: false }));
 
-    const { uri } = result;
-
     if (!result.cancelled) {
       const { navigation } = this.props;
+      const { uri } = result;
+
+      axios.get('http://10.0.0.141:5000/').then((req, res) => {
+        console.log(res.data);
+      });
 
       navigation.navigate('Info', {
         imageUri: uri,
@@ -63,14 +62,15 @@ class CaptureScreen extends Component {
 
         <TouchableHighlight
           style={styles.button}
-          onPress={() => ensureCameraPermission(this.openCamera)}
+          onPress={() => ensureCameraPermission(() => this.pickImage('cam'))}
         >
           <Text style={styles.buttonText}>Capture Picture</Text>
         </TouchableHighlight>
         <Text style={styles.separatorText}>OR</Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => ensureCameraPermission(this.pickImage)}
+          onPress={() => ensureCameraPermission(() => this.pickImage('library'))
+          }
         >
           <Text style={styles.buttonText}>Pick From Gallery</Text>
         </TouchableHighlight>

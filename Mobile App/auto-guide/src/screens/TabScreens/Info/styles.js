@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontFamily: fontTypes.mainThin,
   },
+  notCaptured: {
+    fontFamily: fontTypes.mainThin,
+  },
 });
 
 export default styles;

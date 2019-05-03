@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 3648,
-  "expoServerNgrokUrl": "https://nv-dgp.abdo-a.auto-guide.exp.direct",
-  "packagerNgrokUrl": "https://packager.nv-dgp.abdo-a.auto-guide.exp.direct",
-  "ngrokPid": 5176
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
