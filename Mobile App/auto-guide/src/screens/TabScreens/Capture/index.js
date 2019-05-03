@@ -41,10 +41,11 @@ class CaptureScreen extends Component {
       const { navigation } = this.props;
       const { uri } = result;
 
-      axios.get('http://10.0.0.141:5000/').then((req, res) => {
-        console.log(res.data);
-      });
+      // axios.get('http://10.0.0.141:5000/').then((req, res) => {
+      //   console.log(res.data);
+      // });
 
+      console.log(uri)
       navigation.navigate('Info', {
         imageUri: uri,
       });

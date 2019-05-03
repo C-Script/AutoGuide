@@ -4,10 +4,7 @@ import { colors, fontTypes } from '../../../assets/styles/base';
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
+   
   },
   image: {
     width: 200,
@@ -22,6 +19,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     textAlign: 'center',
     fontSize: 18,
+    marginBottom:10,
   },
   infoTitle: {
     marginVertical: 5,

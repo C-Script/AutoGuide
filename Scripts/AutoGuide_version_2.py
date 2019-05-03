@@ -111,12 +111,20 @@ class BOV:
         self.testImages, self.testImageCount = self.file_helper.getFiles(
             self.test_path)
 
+        print('test images are ',self.testImages)
+        print(self.testImageCount)
+   
+
         predictions = []
+
+       
 
         for word, imlist in self.testImages.items():
             print("processing ", word)
+            print("image list is ",imlist)
             for im in imlist:
                 # print imlist[0].shape, imlist[1].shape
+               
                 print(im.shape)
                 cl = self.recognize(im)
                 print(cl)
@@ -126,7 +134,8 @@ class BOV:
                     'object_name': self.name_dict[str(int(cl[0]))]
                 })
 
-        print(predictions)
+        print('hi')
+        print('I am' ,predictions)
         for each in predictions:
             # cv2.imshow(each['object_name'], each['image'])
             # cv2.waitKey()
@@ -165,15 +174,15 @@ if __name__ == '__main__':
     # print(sys.argv)
     # print(sys.argv[2])
     # set training paths
-    bov.train_path = r'C:\Users\ahmed\Desktop\Image-Processing\Project\photos'
+    ##bov.train_path = r'C:\Users\ahmed\Desktop\Image-Processing\Project\photos'
     # set testing paths
-    # bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
+    bov.test_path =r'C:\Users\mohamed\Desktop\test'
     # train the model
     s = time.clock()
-    bov.trainModel()
+    ##bov.trainModel()
     print('time elapsed: ', (time.clock()-s)/60)
     # test model
-    # bov.loadModel()
-    # bov.testModel()
+    bov.loadModel()
+    bov.testModel()
     # save the model
-    bov.saveModel()
+    #bov.saveModel()

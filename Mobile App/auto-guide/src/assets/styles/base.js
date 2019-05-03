@@ -1,3 +1,5 @@
+import {Dimensions} from 'react-native';
+
 export const colors = {
   primary: '#de8842',
   primaryDark: '#B66420',
@@ -7,6 +9,11 @@ export const colors = {
 
 export const sizes = {
   bottomTabHeight: 70,
+};
+
+export const dimensions = {
+  fullHeight: Dimensions.get('window').height,
+  fullWidth: Dimensions.get('window').width,
 };
 
 export const fontTypes = {

@@ -1,41 +1,71 @@
-import {
-  View, Image, Text, ScrollView,
-} from 'react-native';
+import { View, Image, Text, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Component } from 'react';
 import info from '../../../assets/info';
-
+import { dimensions } from '../../../assets/styles/base';
 import styles from './styles';
+import SnakeNavigator from '../../../components/snakeNavigator';
 
-const InfoScreen = ({ navigation }) => {
-  let imageUri = '';
+class InfoScreen extends Component {
+  state = {
+    imageUri: '',
+  };
 
-  if (navigation.state.params) {
-    ({ imageUri } = navigation.state.params);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.navigation.state.params !== this.props.navigation.state.params) {
+      this.setState({ imageUri: nextProps.navigation.state.params.imageUri });
+    }
   }
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {imageUri ? (
-        <View>
-          <Text style={styles.infoTitle}>{info[0].name}</Text>
-
-          <Image
-            source={{
-              uri: imageUri,
-            }}
-            style={styles.image}
-          />
+  getSnakeNavigatorContent = () => {
+    return [
+      {
+        name: 'Info In Arabic',
+        component: () => (
           <Text style={styles.info}>{info[0].info_in_arabic}</Text>
-        </View>
-      ) : (
-        <Text style={styles.notCaptured}>
-          {'You haven\'t captured any image yet'}
-        </Text>
-      )}
-    </ScrollView>
-  );
-};
+        ),
+      },
+      {
+        name: 'Info In English',
+        component: () => (
+          <Text style={styles.info}>{info[0].info_in_english}</Text>
+        ),
+      },
+    ];
+  };
+
+  render() {
+    const { imageUri } = this.state;
+    const { navigation } = this.props;
+
+
+    return (
+      <ScrollView contentContainerStyle={styles.container}>
+        {imageUri ? (
+          <View>
+            <Text style={styles.infoTitle}>{info[0].name}</Text>
+
+            <Image
+              source={{
+                uri: imageUri,
+              }}
+              style={styles.image}
+            />
+            <SnakeNavigator
+              content={this.getSnakeNavigatorContent()}
+              navigation={navigation}
+              snakeWidth={dimensions.fullWidth * 0.7}
+            />
+          </View>
+        ) : (
+          <Text style={styles.notCaptured}>
+            {"You haven't captured any image yet"}
+          </Text>
+        )}
+      </ScrollView>
+    );
+  }
+}
 
 InfoScreen.defaultProps = {
   navigation: {},
