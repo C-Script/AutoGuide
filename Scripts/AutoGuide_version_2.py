@@ -161,11 +161,11 @@ if __name__ == '__main__':
     # args =  vars(parser.parse_args())
     # print(args)
 
-    bov = BOV(no_clusters=100)
+    bov = BOV(no_clusters=20)
     # print(sys.argv)
     # print(sys.argv[2])
     # set training paths
-    bov.train_path = r'C:\Users\ahmed\Desktop\Image-Processing\Project\photos'
+    bov.train_path = sys.argv[1]
     # set testing paths
     # bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
     # train the model
