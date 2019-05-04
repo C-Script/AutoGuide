@@ -12,8 +12,9 @@ def upload_image():
         print(request.files)
         print (request.files['image'])
         f=request.files['image']
-        f.save("C:\\Users\\mohamed\\Desktop\\" + secure_filename(f.filename))
-        return jsonify({"image":"success"})
+        f.save(secure_filename(f.filename))
+        
+        return jsonify({"name":"Nefrtiti"})
 
 
     if request.method =='GET':

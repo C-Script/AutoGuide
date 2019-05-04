@@ -59,19 +59,24 @@ class CaptureScreen extends Component {
         },
       };
 
+
       axios
-        .post('http://192.168.0.5:5000/image', newImage, config)
+        .post('http://192.168.43.39:5000/image', newImage, config)
         .then((res) => {
           console.log(res.data);
-          const image = JSON.parse(res.data);
+          const { name: imageName } = res.data
+          console.log(imageName)
           navigation.navigate('Info', {
             imageUri: uri,
-            name: image.name,
+            imageName: imageName,
+
           });
+
         })
         .catch((err) => {
           console.log(err);
         });
+
     }
   };
 
