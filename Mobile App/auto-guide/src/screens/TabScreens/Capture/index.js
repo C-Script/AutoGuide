@@ -60,19 +60,13 @@ class CaptureScreen extends Component {
         },
       };
 
-      console.log('hi')
 
-      axios.get('http://192.168.0.5:5000/image').then((res)=>{
+     
+
+      axios.post('http://192.168.0.5:5000/image', newImage, config).then((res)=>{
         console.log(res.data)
-      })
 
-      axios.post('http://192.168.0.5:5000/image', newImage, config).then(()=>{
-        console.log('done')
-
-        // axios.get('http://192.168.0.5:5000/').then((req, res) => {
-        //   console.log(res.data);
-        // });
-  
+       
       }).catch((err)=>{
 
         console.log(err)
