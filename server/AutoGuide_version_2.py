@@ -98,7 +98,7 @@ class BOV:
         # predict the class of the image
         lb = self.bov_helper.clf.predict(vocab)
         # print "Image belongs to class : ", self.name_dict[str(int(lb[0]))]
-        return lb,vocab
+        return lb, vocab
 
     def testModel(self):
         """ 
@@ -112,24 +112,22 @@ class BOV:
         self.testImages, self.testImageCount = self.file_helper.getFiles(
             self.test_path)
 
-        print('test images are ',self.testImages)
+        print('test images are ', self.testImages)
         print(self.testImageCount)
-   
 
         predictions = []
-        cls=[]
-        vocabs=[]
-
+        cls = []
+        vocabs = []
 
         for word, imlist in self.testImages.items():
             print("processing ", word)
-            print("image list is ",imlist)
+            print("image list is ", imlist)
             for im in imlist:
                 # print imlist[0].shape, imlist[1].shape
-               
+
                 print(im.shape)
                 try:
-                    cl,vocab = self.recognize(im)
+                    cl, vocab = self.recognize(im)
 
                 except:
                     print('Error too big image, cant load image ')
@@ -145,7 +143,7 @@ class BOV:
                 })
 
         print('hi')
-        print('I am' ,predictions)
+        print('I am', predictions)
         # vocabs=np.array(vocabs)
         # vocabs.transpose(2, 0, 1).reshape(-1, vocabs.shape[1])
         # cls=np.array(cls)
@@ -176,12 +174,12 @@ class BOV:
 
 
 #
-def testingMain(n_clusters,Testpath):
+def testingMain(n_clusters, Testpath):
     bov = BOV(no_clusters=n_clusters)
-    
-    bov.test_path =r'C:\Users\Mohamed\Desktop\AutoGuide\server\Tests'
+
+    bov.test_path = r'Tests'
     bov.loadModel()
-    predic=bov.testModel()
+    predic = bov.testModel()
     return predic[0]['object_name']
 
 # if __name__ == '__main__':

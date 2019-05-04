@@ -1,49 +1,60 @@
-import { View, Image, Text, ScrollView } from 'react-native';
+import {
+  View, Image, Text, ScrollView,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import info from '../../../assets/info';
+
 import { dimensions } from '../../../assets/styles/base';
-import styles from './styles';
+import allInfo from '../../../assets/info';
 import SnakeNavigator from '../../../components/snakeNavigator';
+import styles from './styles';
 
 class InfoScreen extends Component {
   state = {
     imageUri: '',
+    imageInfo: '',
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.navigation.state.params !== this.props.navigation.state.params) {
-      this.setState({ imageUri: nextProps.navigation.state.params.imageUri });
+    const { navigation } = this.props;
+    const { navigation: nextNavigation } = nextProps;
+    if (nextNavigation.state.params !== navigation.state.params) {
+      this.setState({
+        imageUri: nextNavigation.state.params.imageUri,
+        imageInfo: allInfo.find(
+          oneInfo => oneInfo.name === nextNavigation.state.params.imageName,
+        ),
+      });
     }
   }
 
   getSnakeNavigatorContent = () => {
+    const { imageInfo } = this.state;
     return [
       {
-        name: 'Info In Arabic',
+        name: 'بالعربية',
         component: () => (
-          <Text style={styles.info}>{info[0].info_in_arabic}</Text>
+          <Text style={styles.info}>{imageInfo.info_in_arabic}</Text>
         ),
       },
       {
-        name: 'Info In English',
+        name: 'In English',
         component: () => (
-          <Text style={styles.info}>{info[0].info_in_english}</Text>
+          <Text style={styles.info}>{imageInfo.info_in_english}</Text>
         ),
       },
     ];
   };
 
   render() {
-    const { imageUri } = this.state;
+    const { imageUri, imageInfo } = this.state;
     const { navigation } = this.props;
-
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {imageUri ? (
           <View>
-            <Text style={styles.infoTitle}>{info[0].name}</Text>
+            <Text style={styles.infoTitle}>{imageInfo.name}</Text>
 
             <Image
               source={{
@@ -59,7 +70,7 @@ class InfoScreen extends Component {
           </View>
         ) : (
           <Text style={styles.notCaptured}>
-            {"You haven't captured any image yet"}
+            {'You haven\'t captured any image yet'}
           </Text>
         )}
       </ScrollView>

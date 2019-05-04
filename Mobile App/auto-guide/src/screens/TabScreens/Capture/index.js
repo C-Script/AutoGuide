@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { colors } from '../../../assets/styles/base';
 import { ensureCameraPermission } from '../../../helpers/ensurePermissions';
+import { imageServerUrl } from '../../../constants';
 import styles from './styles';
 
 class CaptureScreen extends Component {
@@ -35,21 +36,17 @@ class CaptureScreen extends Component {
 
     const result = await this.imagePickerAsync(imageType);
 
-    this.setState(() => ({ uploadingImage: false }));
-
     if (!result.cancelled) {
       const { navigation } = this.props;
       const { uri } = result;
 
       const newImage = new FormData();
 
-      console.log(uri)
-
       if (uri) {
         const uriParts = uri.split('.');
         const fileType = uriParts[uriParts.length - 1];
         newImage.append('image', {
-          uri: uri,
+          uri,
           name: uri.split('/').pop(),
           type: `image/${fileType}`,
         });
@@ -61,24 +58,21 @@ class CaptureScreen extends Component {
         },
       };
 
-
       axios
-        .post('http://192.168.43.39:5000/image', newImage, config)
+        .post(imageServerUrl, newImage, config)
         .then((res) => {
-          console.log(res.data);
-          const { name: imageName } = res.data
-          console.log(imageName)
+          const { name: imageName } = res.data;
+          console.log(imageName);
+          this.setState(() => ({ uploadingImage: false }));
           navigation.navigate('Info', {
             imageUri: uri,
-            imageName: imageName,
-
+            imageName,
           });
-
         })
         .catch((err) => {
+          this.setState(() => ({ uploadingImage: false }));
           console.log(err);
         });
-
     }
   };
 
@@ -100,8 +94,7 @@ class CaptureScreen extends Component {
         <Text style={styles.separatorText}>OR</Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() =>
-            ensureCameraPermission(() => this.pickImage('library'))
+          onPress={() => ensureCameraPermission(() => this.pickImage('library'))
           }
         >
           <Text style={styles.buttonText}>Pick From Gallery</Text>

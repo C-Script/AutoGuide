@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 9316,
-  "expoServerNgrokUrl": "https://vc-hxc.anonymous.auto-guide.exp.direct",
-  "packagerNgrokUrl": "https://packager.vc-hxc.anonymous.auto-guide.exp.direct",
-  "ngrokPid": 11896,
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "webpackServerPort": null
 }
