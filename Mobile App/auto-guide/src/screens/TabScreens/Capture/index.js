@@ -60,23 +60,19 @@ class CaptureScreen extends Component {
         },
       };
 
-
-     
-
-      axios.post('http://192.168.0.5:5000/image', newImage, config).then((res)=>{
-        console.log(res.data)
-
-       
-      }).catch((err)=>{
-
-        console.log(err)
-      })
-
-
-     
-      navigation.navigate('Info', {
-        imageUri: uri,
-      });
+      axios
+        .post('http://192.168.0.5:5000/image', newImage, config)
+        .then((res) => {
+          console.log(res.data);
+          const image = JSON.parse(res.data);
+          navigation.navigate('Info', {
+            imageUri: uri,
+            name: image.name,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -98,7 +94,8 @@ class CaptureScreen extends Component {
         <Text style={styles.separatorText}>OR</Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => ensureCameraPermission(() => this.pickImage('library'))
+          onPress={() =>
+            ensureCameraPermission(() => this.pickImage('library'))
           }
         >
           <Text style={styles.buttonText}>Pick From Gallery</Text>
