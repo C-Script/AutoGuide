@@ -42,7 +42,6 @@ class CaptureScreen extends Component {
       const { uri } = result;
 
       const newImage = new FormData();
-      // if the user is signed with facebook but wants to upload avatar
 
       if (uri) {
         const uriParts = uri.split('.');
