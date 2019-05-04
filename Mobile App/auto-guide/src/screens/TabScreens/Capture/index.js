@@ -41,10 +41,45 @@ class CaptureScreen extends Component {
       const { navigation } = this.props;
       const { uri } = result;
 
-      // axios.get('http://10.0.0.141:5000/').then((req, res) => {
-      //   console.log(res.data);
-      // });
+      const newImage = new FormData();
+      // if the user is signed with facebook but wants to upload avatar
 
+      if (uri) {
+        const uriParts = uri.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+        newImage.append('image', {
+          uri: uri,
+          name: uri.split('/').pop(),
+          type: `image/${fileType}`,
+        });
+      }
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      console.log('hi')
+
+      axios.get('http://192.168.0.5:5000/image').then((res)=>{
+        console.log(res.data)
+      })
+
+      axios.post('http://192.168.0.5:5000/image', newImage, config).then(()=>{
+        console.log('done')
+
+        // axios.get('http://192.168.0.5:5000/').then((req, res) => {
+        //   console.log(res.data);
+        // });
+  
+      }).catch((err)=>{
+
+        console.log(err)
+      })
+
+
+     
       navigation.navigate('Info', {
         imageUri: uri,
       });
