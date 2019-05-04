@@ -43,6 +43,8 @@ class CaptureScreen extends Component {
 
       const newImage = new FormData();
 
+      console.log(uri)
+
       if (uri) {
         const uriParts = uri.split('.');
         const fileType = uriParts[uriParts.length - 1];

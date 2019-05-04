@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 from sklearn.externals import joblib
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
 
 class ImageHelpers:
@@ -110,23 +110,23 @@ class BOVHelpers:
         predictions = self.clf.predict(iplist)
         return predictions
 
-    def plotHist(self, vocabulary=None):
-        print("Plotting histogram")
-        if vocabulary is None:
-            vocabulary = self.mega_histogram
+    # def plotHist(self, vocabulary=None):
+    #     print("Plotting histogram")
+    #     if vocabulary is None:
+    #         vocabulary = self.mega_histogram
 
-        x_scalar = np.arange(self.n_clusters)
-        y_scalar = np.array([abs(np.sum(vocabulary[:, h], dtype=np.int32))
-                             for h in range(self.n_clusters)])
+    #     x_scalar = np.arange(self.n_clusters)
+    #     y_scalar = np.array([abs(np.sum(vocabulary[:, h], dtype=np.int32))
+    #                          for h in range(self.n_clusters)])
 
-        print(y_scalar)
+    #     print(y_scalar)
 
-        plt.bar(x_scalar, y_scalar)
-        plt.xlabel("Visual Word Index")
-        plt.ylabel("Frequency")
-        plt.title("Complete Vocabulary Generated")
-        plt.xticks(x_scalar + 0.4, x_scalar)
-        plt.show()
+    #     plt.bar(x_scalar, y_scalar)
+    #     plt.xlabel("Visual Word Index")
+    #     plt.ylabel("Frequency")
+    #     plt.title("Complete Vocabulary Generated")
+    #     plt.xticks(x_scalar + 0.4, x_scalar)
+    #     plt.show()
 
     def ModelSave(self, name):
         joblib.dump(self.clf, name)
@@ -144,7 +144,17 @@ class FileHelpers:
 
     def __init__(self):
         pass
-
+    def imgResize(self,directorySrc,width,height):
+    # images  = os.listdir(directorySrc)
+    # for imgName in images :
+    #     os.chdir(directorySrc)
+        dim = (width, height)
+        resizedImg = cv2.resize(directorySrc, dim, interpolation = cv2.INTER_AREA)
+        # os.chdir(directoryDest)
+        # cv2.imwrite(imgName, resizedImg)
+        #cv2.imshow("Resized image", resizedImg)
+        #cv2.waitKey(0)
+        return resizedImg
     def getFiles(self, path):
         """
         - returns  a dictionary of all files 
@@ -164,7 +174,9 @@ class FileHelpers:
             for imagefile in glob(path+'\\'+word+"\\*.jpg"):
                 print(imagefile)
                 print("Reading file ", imagefile)
+                
                 im = cv2.imread(imagefile, 0)
+                # im=self.imgResize(im,512,512)
                 imlist[word].append(im)
                 count += 1
 

@@ -8,7 +8,7 @@ from helpers import *
 import sys
 import time
 from sklearn import metrics
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 
 
 class BOV:
@@ -132,6 +132,7 @@ class BOV:
                     cl,vocab = self.recognize(im)
 
                 except:
+                    print('Error too big image, cant load image ')
                     continue
                 cls.append(cl)
                 vocabs.append(vocab)
@@ -150,17 +151,17 @@ class BOV:
         # cls=np.array(cls)
         # print(vocabs.shape,cls.shape)
         # print("Accuracy:", metrics.accuracy_score(vocabs, cls))
-        for each in predictions:
-            # cv2.imshow(each['object_name'], each['image'])
-            # cv2.waitKey()
-            # cv2.destroyWindow(each['object_name'])
-            #
-            plt.imshow(cv2.cvtColor(each['image'], cv2.COLOR_GRAY2RGB))
-            plt.title(each['object_name'])
-            plt.show()
+        # for each in predictions:
+        #     # cv2.imshow(each['object_name'], each['image'])
+        #     # cv2.waitKey()
+        #     # cv2.destroyWindow(each['object_name'])
+        #     #
+        #     plt.imshow(cv2.cvtColor(each['image'], cv2.COLOR_GRAY2RGB))
+        #     plt.title(each['object_name'])
+        #     plt.show()
 
-
-
+        print(predictions)
+        return predictions
 
     def print_vars(self):
         pass
@@ -175,30 +176,38 @@ class BOV:
 
 
 #
-if __name__ == '__main__':
-
-    # # parse cmd args
-    # parser = argparse.ArgumentParser(
-    #         description=" Bag of visual words example"
-    #     )
-    # parser.add_argument('--train_path', action="store", dest="train_path", required=True)
-    # parser.add_argument('--test_path', action="store", dest="test_path", required=True)
-
-    # args =  vars(parser.parse_args())
-    # print(args)
-    bov = BOV(no_clusters=100)
-    # print(sys.argv)
-    # print(sys.argv[2])
-    # set training paths
-    # bov.train_path = sys.argv[1]
-    # set testing paths
-    bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
-    # train the model
-    # s = time.clock()
-    # bov.trainModel()
-    # print('time elapsed: ', (time.clock()-s)/60)
-    # test model
+def testingMain(n_clusters,Testpath):
+    bov = BOV(no_clusters=n_clusters)
+    
+    bov.test_path =r'C:\Users\Mohamed\Desktop\AutoGuide\server\Tests'
     bov.loadModel()
-    bov.testModel()
-    # save the model
-    # bov.saveModel()
+    predic=bov.testModel()
+    return predic[0]['object_name']
+
+# if __name__ == '__main__':
+
+#     # # parse cmd args
+#     # parser = argparse.ArgumentParser(
+#     #         description=" Bag of visual words example"
+#     #     )
+#     # parser.add_argument('--train_path', action="store", dest="train_path", required=True)
+#     # parser.add_argument('--test_path', action="store", dest="test_path", required=True)
+
+#     # args =  vars(parser.parse_args())
+#     # print(args)
+#     bov = BOV(no_clusters=100)
+#     # print(sys.argv)
+#     # print(sys.argv[2])
+#     # set training paths
+#     # bov.train_path = sys.argv[1]
+#     # set testing paths
+#     bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
+#     # train the model
+#     # s = time.clock()
+#     # bov.trainModel()
+#     # print('time elapsed: ', (time.clock()-s)/60)
+#     # test model
+#     bov.loadModel()
+#     predic[]=bov.testModel()
+#     # save the model
+#     # bov.saveModel()
