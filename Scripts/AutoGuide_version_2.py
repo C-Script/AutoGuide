@@ -7,6 +7,7 @@ import argparse
 from helpers import *
 import sys
 import time
+from sklearn import metrics
 from matplotlib import pyplot as plt
 
 
@@ -97,7 +98,7 @@ class BOV:
         # predict the class of the image
         lb = self.bov_helper.clf.predict(vocab)
         # print "Image belongs to class : ", self.name_dict[str(int(lb[0]))]
-        return lb
+        return lb,vocab
 
     def testModel(self):
         """ 
@@ -116,8 +117,9 @@ class BOV:
    
 
         predictions = []
+        cls=[]
+        vocabs=[]
 
-       
 
         for word, imlist in self.testImages.items():
             print("processing ", word)
@@ -126,7 +128,14 @@ class BOV:
                 # print imlist[0].shape, imlist[1].shape
                
                 print(im.shape)
-                cl = self.recognize(im)
+                try:
+                    cl,vocab = self.recognize(im)
+
+                except:
+                    continue
+                cls.append(cl)
+                vocabs.append(vocab)
+                # print("Accuracy:", metrics.accuracy_score(vocab, cl))
                 print(cl)
                 predictions.append({
                     'image': im,
@@ -136,14 +145,23 @@ class BOV:
 
         print('hi')
         print('I am' ,predictions)
+        # vocabs=np.array(vocabs)
+        # vocabs.transpose(2, 0, 1).reshape(-1, vocabs.shape[1])
+        # cls=np.array(cls)
+        # print(vocabs.shape,cls.shape)
+        # print("Accuracy:", metrics.accuracy_score(vocabs, cls))
         for each in predictions:
             # cv2.imshow(each['object_name'], each['image'])
             # cv2.waitKey()
             # cv2.destroyWindow(each['object_name'])
             #
+        
             plt.imshow(cv2.cvtColor(each['image'], cv2.COLOR_GRAY2RGB))
             plt.title(each['object_name'])
             plt.show()
+        return
+
+
 
     def print_vars(self):
         pass
@@ -155,8 +173,12 @@ class BOV:
     def loadModel(self):
         self.bov_helper.ModelLoad(self.modelName)
         self.name_dict = joblib.load('NameDict'+self.modelName)
-
-
+    def SaveKmeansScaleAndDic(self):
+        self.bov_helper.SaveKmeansScale(self.modelName)
+        joblib.dump(self.name_dict, 'NameDict'+self.modelName)
+    def LoadKmeansScaleAndDic(self):    
+        self.bov_helper.LoadKmeansScale(self.modelName)
+        self.name_dict = joblib.load('NameDict'+self.modelName)
 #
 if __name__ == '__main__':
 
@@ -169,20 +191,19 @@ if __name__ == '__main__':
 
     # args =  vars(parser.parse_args())
     # print(args)
-
-    bov = BOV(no_clusters=20)
+    bov = BOV(no_clusters=100)
     # print(sys.argv)
     # print(sys.argv[2])
     # set training paths
-    bov.train_path = sys.argv[1]
+    # bov.train_path = sys.argv[1]
     # set testing paths
-    #bov.test_path =r'C:\Users\mohamed\Desktop\test'
+    bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
     # train the model
-    s = time.clock()
-    bov.trainModel()
-    print('time elapsed: ', (time.clock()-s)/60)
+    # s = time.clock()
+    # bov.trainModel()
+    # print('time elapsed: ', (time.clock()-s)/60)
     # test model
     bov.loadModel()
     bov.testModel()
     # save the model
-    bov.saveModel()
+    # bov.saveModel()

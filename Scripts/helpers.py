@@ -5,6 +5,7 @@ import numpy as np
 from glob import glob
 from sklearn.cluster import KMeans
 from sklearn.svm import SVC
+from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.externals import joblib
 from matplotlib import pyplot as plt
@@ -20,6 +21,8 @@ class ImageHelpers:
 
     def features(self, image):
         keypoints, descriptors = self.sift_object.detectAndCompute(image, None)
+
+
         return [keypoints, descriptors]
 
 
@@ -31,7 +34,7 @@ class BOVHelpers:
         self.descriptor_vstack = None
         self.mega_histogram = None
         self.clf = SVC(verbose=True, max_iter=1000, class_weight='balanced')
-
+        self.MlP=MLPClassifier(hidden_layer_sizes=(100,100,100), max_iter=500, alpha=0.0001,solver='sgd', verbose=True,  random_state=21,tol=0.000000001)
     def cluster(self):
         """	
         cluster using KMeans algorithm, 
@@ -103,7 +106,8 @@ class BOVHelpers:
         print("Train labels", train_labels)
         self.clf.fit(self.mega_histogram, train_labels)
         print("Training completed")
-
+    def trainMLP(self,train_labels):
+        self.MLP.fit(self.mega_histogram,train_labels)
     def predict(self, iplist):
         predictions = self.clf.predict(iplist)
         return predictions
@@ -136,6 +140,12 @@ class BOVHelpers:
         self.scale = joblib.load('Scale'+name)
         print(self.kmeans_obj)
         self.clf = joblib.load(name)
+    def SaveKmeansScale(self,name):
+        joblib.dump(self.kmeans_obj, 'Kmeans'+name)
+        joblib.dump(self.scale, 'Scale'+name)
+    def LoadKmeansScale(self,name):
+        self.kmeans_obj = joblib.load('Kmeans'+name)
+        self.scale = joblib.load('Scale'+name)
 
 
 class FileHelpers:
