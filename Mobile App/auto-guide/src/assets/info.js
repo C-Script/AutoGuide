@@ -121,6 +121,11 @@ const info = [
     info_in_arabic: '',
     info_in_english: '',
   },
+  {
+    name: 'Unknown',
+    info_in_arabic: 'We haven\'t recognized the image',
+    info_in_english: '',
+  },
 ];
 
 export default info;

@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     textAlign: 'center',
     fontSize: 30,
-    fontFamily: fontTypes.mainThin,
+    fontFamily: fontTypes.mainBold,
   },
   notCaptured: {
     alignSelf: 'center',
