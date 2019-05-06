@@ -3,9 +3,6 @@ import { StyleSheet } from 'react-native';
 import { colors, fontTypes } from '../../../assets/styles/base';
 
 const styles = StyleSheet.create({
-  container: {
-   
-  },
   image: {
     width: 200,
     height: 330,
@@ -19,16 +16,18 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     textAlign: 'center',
     fontSize: 18,
-    marginBottom:10,
+    marginBottom: 10,
   },
   infoTitle: {
     marginVertical: 5,
     textAlign: 'center',
     fontSize: 30,
-    fontFamily: fontTypes.mainThin,
+    fontFamily: fontTypes.mainBold,
   },
   notCaptured: {
-    fontFamily: fontTypes.mainThin,
+    alignSelf: 'center',
+    marginTop: 50,
+    fontFamily: fontTypes.mainBold,
   },
 });
 

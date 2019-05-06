@@ -7,6 +7,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { colors } from '../../../assets/styles/base';
 import { ensureCameraPermission } from '../../../helpers/ensurePermissions';
+import { imageServerUrl } from '../../../constants';
 import styles from './styles';
 
 class CaptureScreen extends Component {
@@ -35,19 +36,43 @@ class CaptureScreen extends Component {
 
     const result = await this.imagePickerAsync(imageType);
 
-    this.setState(() => ({ uploadingImage: false }));
-
     if (!result.cancelled) {
       const { navigation } = this.props;
       const { uri } = result;
 
-      // axios.get('http://10.0.0.141:5000/').then((req, res) => {
-      //   console.log(res.data);
-      // });
+      const newImage = new FormData();
 
-      navigation.navigate('Info', {
-        imageUri: uri,
-      });
+      if (uri) {
+        const uriParts = uri.split('.');
+        const fileType = uriParts[uriParts.length - 1];
+        newImage.append('image', {
+          uri,
+          name: uri.split('/').pop(),
+          type: `image/${fileType}`,
+        });
+      }
+
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      axios
+        .post(imageServerUrl, newImage, config)
+        .then((res) => {
+          const { name: imageName } = res.data;
+          console.log(imageName);
+          this.setState(() => ({ uploadingImage: false }));
+          navigation.navigate('Info', {
+            imageUri: uri,
+            imageName,
+          });
+        })
+        .catch((err) => {
+          this.setState(() => ({ uploadingImage: false }));
+          console.log(err);
+        });
     }
   };
 
