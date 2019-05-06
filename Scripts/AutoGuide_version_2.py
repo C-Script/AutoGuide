@@ -65,8 +65,46 @@ class BOV:
 
         self.bov_helper.standardize()
         self.bov_helper.train(self.train_labels)
+    def trainMLP(self):
+        """
+        This method contains the entire module 
+        required for training the bag of visual words model
 
-    def recognize(self, test_img, test_image_path=None):
+        Use of helper functions will be extensive.
+
+        """
+
+        # read file. prepare file lists.
+        self.images, self.trainImageCount = self.file_helper.getFiles(
+            self.train_path)
+        # extract SIFT Features from each image
+        label_count = 0
+        for word, imlist in self.images.items():
+            self.name_dict[str(label_count)] = word
+            print("Computing Features for ", word)
+            for im in imlist:
+                # print(im)
+                # cv2.imshow("im", im)
+                # cv2.waitKey(0)
+                self.train_labels = np.append(self.train_labels, label_count)
+                kp, des = self.im_helper.features(im)
+                self.descriptor_list.append(des)
+
+            label_count += 1
+
+        # perform clustering
+        # print(self.descriptor_list)
+        bov_descriptor_stack = self.bov_helper.formatND(self.descriptor_list)
+        self.bov_helper.cluster()
+        self.bov_helper.developVocabulary(
+            n_images=self.trainImageCount, descriptor_list=self.descriptor_list)
+
+        # show vocabulary trained
+        # self.bov_helper.plotHist()
+
+        self.bov_helper.standardize()
+        self.bov_helper.trainMLP(self.train_labels)
+    def recognize(self, test_img, test_image_path=None,classifier='svm'):
         """ 
         This method recognizes a single image 
         It can be utilized individually as well.
@@ -96,11 +134,16 @@ class BOV:
         vocab = self.bov_helper.scale.transform(vocab)
 
         # predict the class of the image
-        lb = self.bov_helper.clf.predict(vocab)
+        if(classifier=='svm'):
+            lb = self.bov_helper.clf.predict(vocab)
+            return lb, vocab
+        else:
+            lb = self.bov_helper.MlP.predict(vocab)
+            return lb, vocab
         # print "Image belongs to class : ", self.name_dict[str(int(lb[0]))]
-        return lb,vocab
 
-    def testModel(self):
+
+    def testModel(self,classifier):
         """ 
         This method is to test the trained classifier
 
@@ -129,7 +172,8 @@ class BOV:
                
                 print(im.shape)
                 try:
-                    cl,vocab = self.recognize(im)
+
+                    cl,vocab = self.recognize(im,classifier)
 
                 except:
                     continue
@@ -155,9 +199,13 @@ class BOV:
             # cv2.waitKey()
             # cv2.destroyWindow(each['object_name'])
             #
+        
             plt.imshow(cv2.cvtColor(each['image'], cv2.COLOR_GRAY2RGB))
             plt.title(each['object_name'])
             plt.show()
+        return
+
+
 
 
 
@@ -172,9 +220,16 @@ class BOV:
     def loadModel(self):
         self.bov_helper.ModelLoad(self.modelName)
         self.name_dict = joblib.load('NameDict'+self.modelName)
-
-
-#
+    def SaveKmeansScaleAndDic(self):
+        self.bov_helper.SaveKmeansScale(self.modelName)
+        joblib.dump(self.name_dict, 'NameDict'+self.modelName)
+    def LoadKmeansScaleAndDic(self):    
+        self.bov_helper.LoadKmeansScale(self.modelName)
+        self.name_dict = joblib.load('NameDict'+self.modelName)
+    def SaveMLP(self):
+        self.bov_helper.SaveMLP(self.modelName)
+    def LoadMLP(self):
+        self.bov_helper.LoadMLP(self.modelName)
 if __name__ == '__main__':
 
     # # parse cmd args
@@ -187,18 +242,31 @@ if __name__ == '__main__':
     # args =  vars(parser.parse_args())
     # print(args)
     bov = BOV(no_clusters=100)
-    # print(sys.argv)
+    bov.test_path = sys.argv[1]
+    if(sys.argv[2]=='svm'):
+        bov.loadModel()
+        bov.testModel(classifier='svm')
+
+    else:
+        bov.LoadMLP()
+        bov.LoadKmeansScaleAndDic()
+        bov.testModel(classifier='mlp')
+    print(sys.argv)
     # print(sys.argv[2])
     # set training paths
-    # bov.train_path = sys.argv[1]
+
     # set testing paths
-    bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
+    # bov.test_path = sys.argv[2]
     # train the model
-    # s = time.clock()
-    # bov.trainModel()
-    # print('time elapsed: ', (time.clock()-s)/60)
+    # s=time.clock()
+    # bov.LoadKmeansScaleAndDic()
+    # bov.LoadMLP()
+    # bov.LoadKmeansScaleAndDic()
+    # bov.train_path = sys.argv[1]
+    # bov.testModel()
+    # print('training time : {} Minutes'.format((time.clock()-s)/60))
     # test model
-    bov.loadModel()
-    bov.testModel()
+    # bov.testModel()
     # save the model
-    # bov.saveModel()
+    # bov.SaveKmeansScaleAndDic()
+    # bov.SaveMLP()
