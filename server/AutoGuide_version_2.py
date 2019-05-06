@@ -209,14 +209,15 @@ class BOV:
 
 def testingMain(n_clusters, Testpath,classifier='mlp'):
     bov = BOV(no_clusters=n_clusters)
+    bov.test_path=Testpath
     # loading the svm classifier
     if(classifier.lower()=='svm'):
         bov.loadModel()
-        predic=bov.testModel(classifier='svm')
+        predic=bov.testModel(classifier)
         return predic[0]['object_name']
     # loading the mlp classifer
     else:
         bov.LoadMLP()
         bov.LoadKmeansScaleAndDic()
-        predic=bov.testModel(classifier='mlp')
+        predic=bov.testModel(classifier)
         return predic[0]['object_name']
