@@ -109,7 +109,7 @@ class BOV:
         self.bov_helper.standardize()
         self.bov_helper.trainMLP(self.train_labels)
 
-    def recognize(self,test_img, test_image_path=None,classifier):
+    def recognize(self,test_img,classifier,test_image_path=None):
 
         """ 
         This method recognizes a single image 
@@ -206,7 +206,7 @@ class BOV:
         self.bov_helper.SaveMLP(self.modelName)
     def LoadMLP(self):
         self.bov_helper.LoadMLP(self.modelName)
-        
+
 def testingMain(n_clusters, Testpath,classifier='mlp'):
     bov = BOV(no_clusters=n_clusters)
     # loading the svm classifier

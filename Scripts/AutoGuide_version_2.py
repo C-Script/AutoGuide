@@ -104,7 +104,7 @@ class BOV:
 
         self.bov_helper.standardize()
         self.bov_helper.trainMLP(self.train_labels)
-    def recognize(self, test_img, test_image_path=None,classifier='svm'):
+    def recognize(self, test_img,classifier,test_image_path=None):
         """ 
         This method recognizes a single image 
         It can be utilized individually as well.
@@ -199,7 +199,7 @@ class BOV:
             # cv2.waitKey()
             # cv2.destroyWindow(each['object_name'])
             #
-        
+
             plt.imshow(cv2.cvtColor(each['image'], cv2.COLOR_GRAY2RGB))
             plt.title(each['object_name'])
             plt.show()
@@ -242,15 +242,16 @@ if __name__ == '__main__':
     # args =  vars(parser.parse_args())
     # print(args)
     bov = BOV(no_clusters=100)
-    bov.test_path = sys.argv[1]
-    if(sys.argv[2]=='svm'):
+    bov.test_path =r'C:\Users\M.Eltobgy\Desktop\AutoGuide\Data\test'
+    classifier='mlp'
+    if(classifier=='svm'):
         bov.loadModel()
-        bov.testModel(classifier='svm')
+        bov.testModel(classifier)
 
     else:
         bov.LoadMLP()
         bov.LoadKmeansScaleAndDic()
-        bov.testModel(classifier='mlp')
+        bov.testModel(classifier)
     print(sys.argv)
     # print(sys.argv[2])
     # set training paths
