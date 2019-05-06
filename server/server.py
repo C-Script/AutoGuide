@@ -19,7 +19,7 @@ def upload_image():
         savePath = "Tests\\uploaded\\"+secure_filename(f.filename)
         n_clusters = 100
         f.save(savePath)
-        predictedName = testingMain(n_clusters, testPath)
+        predictedName = testingMain(n_clusters,testPath,classifier='mlp')
         deletepath = testPath+'\\uploaded'+'\\*'
         for each in glob(deletepath):
             os.remove(each)

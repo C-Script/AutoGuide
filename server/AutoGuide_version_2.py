@@ -206,11 +206,11 @@ class BOV:
         self.bov_helper.SaveMLP(self.modelName)
     def LoadMLP(self):
         self.bov_helper.LoadMLP(self.modelName)
-
+        
 def testingMain(n_clusters, Testpath,classifier='mlp'):
     bov = BOV(no_clusters=n_clusters)
     # loading the svm classifier
-   if(classifier.lower()=='svm'):
+    if(classifier.lower()=='svm'):
         bov.loadModel()
         predic=bov.testModel(classifier='svm')
         return predic[0]['object_name']
