@@ -142,8 +142,8 @@ class BOVHelpers:
 		joblib.dump(self.scale, 'MLPScale'+name)
 		joblib.dump(self.kmeans_ret,'Kmeans_ret'+name)
 	def LoadKmeansScale(self,name):
-		self.scale = joblib.load('Scale'+name)
-		self.kmeans_obj = joblib.load('Kmeans'+name)
+		self.scale = joblib.load('MLPScale'+name)
+		self.kmeans_obj = joblib.load('MLPKmeans'+name)
 		self.kmeans_ret=joblib.load('Kmeans_ret'+name)
 	def LoadMLP(self,name):
 		self.MLP = joblib.load('MLP'+name)
