@@ -54,7 +54,7 @@ class InfoScreen extends Component {
       <ScrollView contentContainerStyle={styles.container}>
         {imageUri ? (
           <View>
-            <Text style={styles.infoTitle}>{imageInfo.name}</Text>
+            <Text style={styles.infoTitle}>{imageInfo.name_to_be_displayed}</Text>
 
             <Image
               source={{
