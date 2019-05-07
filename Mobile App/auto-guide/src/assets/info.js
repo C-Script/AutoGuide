@@ -40,8 +40,8 @@ const info = [
       'Amenhotep, son of Hapu was an ancient Egyptian architect, a priest, a scribe, and a public official, who held a number of offices under Amenhotep III of the 18th Dynasty. ',
   },
   {
-    name: 'Hatshepsut_statue',
-    name_to_be_displayed:'Hatshepsut',
+    name: 'Khufu_statue',
+    name_to_be_displayed:'Khufu',
     info_in_arabic:
       ' خلف خوفو والده سنفرو كملك. من المعروف عمومًا أنه كلف ببناء هرم الجيزة الأكبر لكى يُدفَن به ، أحد عجائب الدنيا السبع في العالم القديم ، لكن هناك جوانب كثيرة من حكمه موثقة بشكل سيئ',
     info_in_english:

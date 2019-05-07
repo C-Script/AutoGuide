@@ -34,7 +34,6 @@ class BOVHelpers:
 	def cluster(self):
 		"""	
 		cluster using KMeans algorithm, 
-
 		"""
 		self.kmeans_ret = self.kmeans_obj.fit_predict(self.descriptor_vstack)
 
@@ -45,10 +44,8 @@ class BOVHelpers:
 		Every image can be represeted as a combination of multiple 
 		visual words. The best method is to generate a sparse histogram
 		that contains the frequency of occurence of each visual word 
-
 		Thus the vocabulary comprises of a set of histograms of encompassing
 		all descriptions for all images
-
 		"""
 
 		self.mega_histogram = np.array([np.zeros(self.n_clusters) for i in range(n_images)])
@@ -70,7 +67,6 @@ class BOVHelpers:
 		standardize is required to normalize the distribution
 		wrt sample size and features. If not normalized, the classifier may become
 		biased due to steep variances.
-
 		"""
 		if std is None:
 			self.scale = StandardScaler().fit(self.mega_histogram)
@@ -83,7 +79,6 @@ class BOVHelpers:
 		"""	
 		restructures list into vstack array of shape
 		M samples x N features for sklearn
-
 		"""
 		vStack = np.array(l[0])
 		for remaining in l[1:]:
@@ -94,8 +89,6 @@ class BOVHelpers:
 	def train(self, train_labels):
 		"""
 		uses sklearn.svm.SVC classifier (SVM) 
-
-
 		"""
 		print( "Training SVM")
 		print( self.clf)
@@ -150,35 +143,31 @@ class BOVHelpers:
 	def SaveMLP(self,name):
 		joblib.dump(self.MLP,'MLP'+name)
 class FileHelpers:
+    
+    def __init__(self):
+        pass
 
-	def __init__(self):
-		pass
+    def getFiles(self, path):
+        """
+        - returns  a dictionary of all files 
+        having key => value as  objectname => image path
 
-	def getFiles(self, path):
-		"""
-		- returns  a dictionary of all files 
-		having key => value as  objectname => image path
+        - returns total number of files.
 
-		- returns total number of files.
+        """
+        imlist = {}
+        count = 0
+        for each in glob(path + "/*"):
+            print(each)
+            word = each.split("/")[-1]
+            print(word)
+            print(" #### Reading image category ", word, " ##### ")
+            imlist[word] = []
+            for imagefile in glob(path+'/'+word+"/*.jpg"):
+                print(imagefile)
+                print("Reading file ", imagefile)
+                im = cv2.imread(imagefile, 0)
+                imlist[word].append(im)
+                count += 1
 
-		"""
-		imlist = {}
-		count = 0
-		for each in glob(path + "/*"):
-			print(each)
-			word = each.split("/")[-1]
-			print(word)
-			print( " #### Reading image category ", word, " ##### ")
-			imlist[word] = []
-			for imagefile in glob(path+'/'+word+"/*.jpg"):
-				print(imagefile)
-				print( "Reading file ", imagefile)
-				try:
-					im = cv2.imread(imagefile, 0)
-				except:
-					print('image {}  error '.format(imagefile))
-					continue
-				imlist[word].append(im)
-				count +=1
-
-		return imlist, count
+        return imlist, count
